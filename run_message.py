@@ -1,8 +1,13 @@
 from slack_sdk import WebClient
-from settings import TOKEN
+from settings import token
 
-client = WebClient(token=TOKEN)
+CHANNEL = "public"
+TOKEN = token
 
-client.chat_postMessage(channel="public",
-                        text="안녕하세요 봇입니다~")
+def send_message(message):
+    channel = CHANNEL
+    token = TOKEN
+    client = WebClient(token=token)
+    client.chat_postMessage(channel=channel, text=message)
 
+send_message(message="안녕하소~ 봇이여")
