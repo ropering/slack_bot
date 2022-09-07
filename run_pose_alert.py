@@ -70,6 +70,8 @@ attach_dict = [
     }
 ]
 
+sched = BackgroundScheduler()
+
 channel_name = "public"
 keywords = "■ 계단 오르내리기~\n" + "■ 스마일~\n"
 text = "_\n" + "=" * 10 + "\n" + keywords + "=" * 10
@@ -77,16 +79,18 @@ text = "_\n" + "=" * 10 + "\n" + keywords + "=" * 10
 channel_id = slack.get_channel_id(channel_name)
 slack.post_message(channel_id, text, attach_dict)
 
+# Run every 1 hour
+# @sched.scheduled_job(trigger='cron', id='job_1', day_of_week='mon-fri', hour='9-18', minute='0', second='0')
 def job_1():
     print(f"job_1 시작... [time] {str(localtime().tm_year)}-{str(localtime().tm_mon)}-{str(localtime().tm_mday)} | {str(localtime().tm_hour)}:{str(localtime().tm_min)}:{str(localtime().tm_sec)} ")
 
+# Run every 2 hour
+@sched.scheduled_job(trigger='cron', id='job_2', day_of_week='mon-fri', hour='8-18/2', minute='0', second='0')
 def job_2():
     print(f"job_2 시작... [time] {str(localtime().tm_year)}-{str(localtime().tm_mon)}-{str(localtime().tm_mday)} | {str(localtime().tm_hour)}:{str(localtime().tm_min)}:{str(localtime().tm_sec)} ")
 
-sched = BackgroundScheduler()
-
+# sched.add_job(job_1, 'interval', seconds=3, id="job_1")
 sched.start()
-sched.add_job(job_1, 'interval', seconds=3, id="job_1")
 
 while True:
     print("running")
